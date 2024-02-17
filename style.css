@@ -1,0 +1,30 @@
+*, ::before, ::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* .unclickable {
+    cursor: pointer;
+} */
+
+.buttons {
+    width: 500px;
+    height: 500px;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.buttons.clickable path {
+    transition: filter 0.3s ease; 
+}
+
+.buttons.clickable path:hover {
+    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.5)); 
+}
+
+.active {
+    opacity: 0.5;
+}
