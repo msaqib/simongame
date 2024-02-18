@@ -23,15 +23,56 @@ let order = []
 
 const sequenceLength = 4
 
-for (let i = 0 ; i < sequenceLength ; i++) {
-    order.push(allButtons[Math.floor(Math.random()*allButtons.length)])
+function initialize() {
+    for (let i = 0 ; i < sequenceLength ; i++) {
+        order.push(allButtons[Math.floor(Math.random()*allButtons.length)])
+    }    
+    flashAll(order)
 }
+
+initialize()
 
 async function flashAll(order) {
     for (const button of order) {
         await flash(button)
     }
-    document.querySelector('.buttons').classList.add('clickable')
+    enableClicks()
 }
 
-flashAll(order)
+const buttonClicked = event => {
+    if (event.currentTarget === order.shift()) {
+        if (order.length === 0) {
+            disableClicks()
+            const won = document.createElement('div')
+            const p = document.createElement('p')
+            const b = document.createElement('button')
+            b.innerText = 'Play again'
+            b.onclick = again
+            p.innerText = 'You won'
+            won.appendChild(p)
+            won.appendChild(b)
+            won.classList.add('modal')
+            document.body.appendChild(won)
+        }
+    }
+    else {
+        console.log('You lose')
+        disableClicks()
+    }
+}
+
+function enableClicks() {
+    document.querySelector('.buttons').classList.add('clickable')
+    allButtons.forEach( button => button.addEventListener('click', buttonClicked))
+} 
+
+function disableClicks() {
+    document.querySelector('.buttons').classList.remove('clickable')
+    allButtons.forEach( button => button.removeEventListener('click', buttonClicked))
+}
+
+function again() {
+    const modal = document.querySelector('.modal')
+    modal.remove()
+    initialize()
+}
